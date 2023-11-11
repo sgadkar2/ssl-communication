@@ -5,6 +5,9 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystems;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
@@ -162,19 +165,22 @@ public class GenPasswd {
 
         String filePath = "hashpasswd.txt";
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] strArray = line.split("\\s+");
+        Path path = FileSystems.getDefault().getPath(filePath);
 
-                if(strArray[0].equals(userId)){
-                    return true;
+        if(Files.exists(path)){
+            try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] strArray = line.split("\\s+");
+
+                    if(strArray[0].equals(userId)){
+                        return true;
+                    }
                 }
+            } catch (IOException e) {
+                System.err.println("An error occurred: " + e.getMessage());
             }
-        } catch (IOException e) {
-            System.err.println("An error occurred: " + e.getMessage());
         }
-
         return isUserPresent;
     }
 
