@@ -17,11 +17,23 @@ public class Serv {
      public static void main(String args[])
     {
 
-        int port = Integer.parseInt(args[0]);
+        if(args.length < 1){
+            System.out.println("Port number is missing in input");
+            System.exit(1);
+        }
+
+        int port = 0;
+
+        try {
+            port = Integer.parseInt(args[0]);
+        } catch (NumberFormatException e) {
+            System.out.println("Port number should be a number");
+            System.exit(1);
+        }
 
         //int port = 35786;
         
-        System.setProperty("javax.net.ssl.keyStore","keyStore.jks");
+        System.setProperty("javax.net.ssl.keyStore","samsher.jks");
         System.setProperty("javax.net.ssl.keyStorePassword","123456");
         //System.setProperty("javax.net.debug","all");
         try
